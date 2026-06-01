@@ -19,8 +19,8 @@ classes. It runs as a REST API and a web app.
 
 **Full build walkthrough + video guide:** [`docs/PROJECT_WALKTHROUGH.md`](docs/PROJECT_WALKTHROUGH.md) (Word version: `docs/PROJECT_WALKTHROUGH.docx`)
 
-**Open the model notebook:** [nbviewer](https://nbviewer.org/github/Wilsons-Navid/report-Demo/blob/master/ml/notebooks/model_demo.ipynb) · [Google Colab](https://colab.research.google.com/github/Wilsons-Navid/report-Demo/blob/master/ml/notebooks/model_demo.ipynb) · [raw on GitHub](ml/notebooks/model_demo.ipynb)
-*(If GitHub's in-browser viewer shows "An error occurred", use the nbviewer link. It always renders the notebook.)*
+**Open the model notebook:** [view it rendered on GitHub](ml/notebooks/model_demo.md) · [nbviewer](https://nbviewer.org/github/Wilsons-Navid/report-Demo/blob/master/ml/notebooks/model_demo.ipynb) · [Colab](https://colab.research.google.com/github/Wilsons-Navid/report-Demo/blob/master/ml/notebooks/model_demo.ipynb) · [the .ipynb](ml/notebooks/model_demo.ipynb)
+*(GitHub's `.ipynb` viewer often fails with "An error occurred". The rendered Markdown version above shows the same notebook, code and plots included, and always opens on GitHub.)*
 
 > **Status: initial model.** Trained on source-provenance labels (Nazario phishing corpus,
 > MOZ-Smishing, Mendeley smishing, UCI SMS). The final evaluation uses a human
