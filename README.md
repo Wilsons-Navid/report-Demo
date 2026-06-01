@@ -10,8 +10,12 @@ four classes, served as a REST API and a web front-end.
 | `advance_fee_fraud` | "You won a £2000 prize GUARANTEED. Call to claim." |
 | `not_a_scam` | "Hey, are we still meeting for lunch at 1pm?" |
 
-**Live front-end:** https://frontend-inky-xi-23.vercel.app
-*(needs the API running — see "Run the API" below; on the hosted site point it at an HTTPS API via `?api=https://your-api`)*
+**Live demo (fully hosted):**
+- Web app → https://frontend-inky-xi-23.vercel.app
+- API (Swagger) → https://scam-classifier-api.onrender.com/docs
+- Repo → https://github.com/Wilsons-Navid/report-Demo
+
+*(The API is on Render's free tier — it sleeps after ~15 min idle, so the first request may take ~30–50s to cold-start.)*
 
 > **Status — initial model.** Trained on source-provenance labels (Nazario phishing corpus,
 > MOZ-Smishing, Mendeley smishing, UCI SMS). The final evaluation uses a human
@@ -69,6 +73,20 @@ python -m uvicorn ml.serve.app:app --reload --port 8000
 cd frontend && python -m http.server 5500
 # open http://127.0.0.1:5500  (API_BASE defaults to http://127.0.0.1:8000)
 ```
+
+## Designs / interfaces
+
+**Web front-end** (live classification result)
+
+![Front-end](docs/screens/frontend.png)
+
+**API — Swagger UI**
+
+![Swagger UI](docs/screens/swagger.png)
+
+The model notebook's data visualisations (class/source/language distributions, length
+profile, class×source provenance heatmap, confusion matrices, per-class F1, top terms)
+are embedded in `ml/notebooks/model_demo.ipynb`.
 
 ## Deployment plan
 

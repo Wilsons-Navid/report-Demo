@@ -18,9 +18,11 @@ It is served as a REST API with interactive Swagger UI.
 > Three further categories (romance / identity-theft / synthetic-media) are scoped as
 > future work — no public message datasets exist for them.
 
-## Repository
+## Repository & live demo
 
-- GitHub: `<add your repo URL here>`
+- GitHub: https://github.com/Wilsons-Navid/report-Demo
+- Live web app: https://frontend-inky-xi-23.vercel.app
+- Live API (Swagger): https://scam-classifier-api.onrender.com/docs
 - Demo code lives under `ml/`.
 
 ## Performance (held-out test set, n = 664)
