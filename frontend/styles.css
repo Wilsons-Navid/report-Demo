@@ -1,16 +1,16 @@
 :root{
-  --bg:#0d0c0a;
-  --surface:#15130e;
-  --surface-2:#1d1a13;
-  --line:#2c281e;
-  --ink:#ece4d2;
-  --muted:#8c8674;
-  --amber:#f4a72c;
-  --c-phishing:#ff5a4d;
-  --c-advance_fee_fraud:#f4a72c;
-  --c-mobile_money_fraud:#b98cff;
-  --c-not_a_scam:#43d39a;
-  --shadow:0 30px 70px -30px rgba(0,0,0,.8);
+  --bg:#0b0a08;
+  --surface:#14110c;
+  --surface-2:#1c1812;
+  --line:#2b261d;
+  --ink:#f1ebda;
+  --muted:#9c9380;
+  --amber:#f6b13a;                 /* brand accent (UI/CTA) */
+  --c-phishing:#fb6f66;            /* coral red    */
+  --c-advance_fee_fraud:#ffd24d;   /* lemon-gold (distinct from brand amber) */
+  --c-mobile_money_fraud:#9d8cf2;  /* periwinkle   */
+  --c-not_a_scam:#4fd1a0;          /* emerald mint */
+  --shadow:0 30px 70px -30px rgba(0,0,0,.85);
 }
 
 *{box-sizing:border-box;margin:0;padding:0}
@@ -18,8 +18,8 @@ html{-webkit-font-smoothing:antialiased}
 body{
   min-height:100vh;
   background:
-    radial-gradient(1200px 700px at 78% -10%, rgba(244,167,44,.10), transparent 60%),
-    radial-gradient(900px 600px at -5% 110%, rgba(185,140,255,.08), transparent 55%),
+    radial-gradient(1200px 700px at 78% -10%, rgba(246,177,58,.10), transparent 60%),
+    radial-gradient(900px 600px at -5% 110%, rgba(157,140,242,.08), transparent 55%),
     var(--bg);
   color:var(--ink);
   font-family:"IBM Plex Mono",ui-monospace,monospace;
@@ -73,7 +73,7 @@ textarea#message{
   padding:18px 20px;transition:border-color .2s, box-shadow .2s;
 }
 textarea#message::placeholder{color:#6a6453}
-textarea#message:focus{outline:none;border-color:var(--amber);box-shadow:0 0 0 3px rgba(244,167,44,.12)}
+textarea#message:focus{outline:none;border-color:var(--amber);box-shadow:0 0 0 3px rgba(246,177,58,.12)}
 
 .examples{margin:22px 0 28px}
 .examples-label{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--muted)}
@@ -92,9 +92,9 @@ textarea#message:focus{outline:none;border-color:var(--amber);box-shadow:0 0 0 3
   padding:16px 26px;cursor:pointer;width:100%;
   display:flex;align-items:center;justify-content:center;gap:12px;
   transition:transform .15s, box-shadow .25s, background .2s;
-  box-shadow:0 10px 30px -12px rgba(244,167,44,.6);
+  box-shadow:0 10px 30px -12px rgba(246,177,58,.6);
 }
-.run:hover{transform:translateY(-2px);box-shadow:0 16px 40px -12px rgba(244,167,44,.7)}
+.run:hover{transform:translateY(-2px);box-shadow:0 16px 40px -12px rgba(246,177,58,.7)}
 .run:active{transform:translateY(0)}
 .run:disabled{opacity:.55;cursor:wait}
 .run-arrow{transition:transform .25s}

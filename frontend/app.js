@@ -9,10 +9,10 @@ const API_BASE =
   "https://scam-classifier-api.onrender.com";
 
 const CATS = {
-  phishing:           { name: "Phishing",            color: "#ff5a4d", note: "Credential / link harvesting" },
-  advance_fee_fraud:  { name: "Advance-Fee Fraud",   color: "#f4a72c", note: "Prize · 419 · inheritance lure" },
-  mobile_money_fraud: { name: "Mobile-Money Fraud",  color: "#b98cff", note: "Wallet · PIN · agent / OTP" },
-  not_a_scam:         { name: "Not a Scam",          color: "#43d39a", note: "Benign message" },
+  phishing:           { name: "Phishing",            color: "#fb6f66", note: "Credential / link harvesting" },
+  advance_fee_fraud:  { name: "Advance-Fee Fraud",   color: "#ffd24d", note: "Prize · 419 · inheritance lure" },
+  mobile_money_fraud: { name: "Mobile-Money Fraud",  color: "#9d8cf2", note: "Wallet · PIN · agent / OTP" },
+  not_a_scam:         { name: "Not a Scam",          color: "#4fd1a0", note: "Benign message" },
 };
 
 const EXAMPLES = [
@@ -86,7 +86,7 @@ msg.addEventListener("keydown", (e) => {
 // ---- render ----
 function render(data) {
   const top = data.predicted_category;
-  const meta = CATS[top] || { name: top, color: "#f4a72c", note: "" };
+  const meta = CATS[top] || { name: top, color: "#ffd24d", note: "" };
 
   const verdict = $("verdict");
   verdict.style.setProperty("--vc", meta.color);
@@ -100,7 +100,7 @@ function render(data) {
   bars.innerHTML = "";
   const entries = Object.entries(data.scores || {}).sort((a, b) => b[1] - a[1]);
   entries.forEach(([cat, score], i) => {
-    const m = CATS[cat] || { name: cat, color: "#8c8674" };
+    const m = CATS[cat] || { name: cat, color: "#9c9380" };
     const row = document.createElement("div");
     row.className = "bar-row" + (cat === top ? " win" : "");
     row.style.setProperty("--bc", m.color);
