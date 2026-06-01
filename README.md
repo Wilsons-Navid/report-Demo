@@ -1,7 +1,7 @@
-# Scam-Message Classifier — Initial Product Demonstration
+# Scam-Message Classifier (initial demo)
 
-A classical ML model that classifies a short message (SMS / email / chat) into one of
-four classes, served as a REST API and a web front-end.
+A classical ML model that sorts a short message (SMS, email, or chat) into one of four
+classes. It runs as a REST API and a web app.
 
 | Class | Example |
 |---|---|
@@ -10,19 +10,19 @@ four classes, served as a REST API and a web front-end.
 | `advance_fee_fraud` | "You won a £2000 prize GUARANTEED. Call to claim." |
 | `not_a_scam` | "Hey, are we still meeting for lunch at 1pm?" |
 
-**Live demo (fully hosted):**
+**Live demo:**
 - Web app → https://frontend-inky-xi-23.vercel.app
 - API (Swagger) → https://scam-classifier-api.onrender.com/docs
 - Repo → https://github.com/Wilsons-Navid/report-Demo
 
-*(The API is on Render's free tier — it sleeps after ~15 min idle, so the first request may take ~30–50s to cold-start.)*
+*(The API runs on Render's free tier, which sleeps after about 15 minutes idle. The first request can take 30 to 50 seconds to wake up.)*
 
 **Full build walkthrough + video guide:** [`docs/PROJECT_WALKTHROUGH.md`](docs/PROJECT_WALKTHROUGH.md) (Word version: `docs/PROJECT_WALKTHROUGH.docx`)
 
-**▶ Open the model notebook:** [nbviewer](https://nbviewer.org/github/Wilsons-Navid/report-Demo/blob/master/ml/notebooks/model_demo.ipynb) · [Google Colab](https://colab.research.google.com/github/Wilsons-Navid/report-Demo/blob/master/ml/notebooks/model_demo.ipynb) · [raw on GitHub](ml/notebooks/model_demo.ipynb)
-*(GitHub's in-browser notebook viewer is intermittently unreliable — if it shows "An error occurred", use the nbviewer link, which always renders it.)*
+**Open the model notebook:** [nbviewer](https://nbviewer.org/github/Wilsons-Navid/report-Demo/blob/master/ml/notebooks/model_demo.ipynb) · [Google Colab](https://colab.research.google.com/github/Wilsons-Navid/report-Demo/blob/master/ml/notebooks/model_demo.ipynb) · [raw on GitHub](ml/notebooks/model_demo.ipynb)
+*(If GitHub's in-browser viewer shows "An error occurred", use the nbviewer link. It always renders the notebook.)*
 
-> **Status — initial model.** Trained on source-provenance labels (Nazario phishing corpus,
+> **Status: initial model.** Trained on source-provenance labels (Nazario phishing corpus,
 > MOZ-Smishing, Mendeley smishing, UCI SMS). The final evaluation uses a human
 > inter-rater-verified (Cohen's κ) corpus, in progress. Romance / identity-theft /
 > synthetic-media categories are future work (no public message datasets exist for them).
@@ -43,11 +43,11 @@ advance-fee **0.86**. Full report + confusion matrices: `ml/notebooks/model_demo
 ml/
 ├── notebooks/model_demo.ipynb   the model notebook (EDA, architecture, metrics, inference)
 ├── src/demo_model.py            TF-IDF + LogReg / RandomForest pipelines
-├── serve/app.py                 FastAPI app (Swagger UI) — the deployment MVP
+├── serve/app.py                 FastAPI app (Swagger UI), the deployment MVP
 ├── data/labelled/demo_labeled.jsonl   4,422 labelled messages
 └── models/                      trained classifier + metrics
 frontend/                        static web UI (deploys to Vercel)
-render.yaml                      one-click API deploy to Render
+render.yaml                      Render deploy config for the API
 ```
 
 ## Setup
@@ -85,7 +85,7 @@ cd frontend && python -m http.server 5500
 
 ![Front-end](docs/screens/frontend.png)
 
-**API — Swagger UI**
+**API (Swagger UI)**
 
 ![Swagger UI](docs/screens/swagger.png)
 
@@ -103,5 +103,5 @@ are embedded in `ml/notebooks/model_demo.ipynb`.
 
 ## Video demo
 
-`<add 5–10 min video link>` — notebook (data → architecture → metrics), then live
-Swagger `/predict` (or the web front-end) across the four classes.
+`<add 5-10 min video link>`. Walk through the notebook (data, architecture, metrics),
+then the live Swagger `/predict` or the web app, across the four classes.
