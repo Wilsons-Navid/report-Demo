@@ -19,6 +19,9 @@ four classes, served as a REST API and a web front-end.
 
 **Full build walkthrough + video guide:** [`docs/PROJECT_WALKTHROUGH.md`](docs/PROJECT_WALKTHROUGH.md) (Word version: `docs/PROJECT_WALKTHROUGH.docx`)
 
+**▶ Open the model notebook:** [nbviewer](https://nbviewer.org/github/Wilsons-Navid/report-Demo/blob/master/ml/notebooks/model_demo.ipynb) · [Google Colab](https://colab.research.google.com/github/Wilsons-Navid/report-Demo/blob/master/ml/notebooks/model_demo.ipynb) · [raw on GitHub](ml/notebooks/model_demo.ipynb)
+*(GitHub's in-browser notebook viewer is intermittently unreliable — if it shows "An error occurred", use the nbviewer link, which always renders it.)*
+
 > **Status — initial model.** Trained on source-provenance labels (Nazario phishing corpus,
 > MOZ-Smishing, Mendeley smishing, UCI SMS). The final evaluation uses a human
 > inter-rater-verified (Cohen's κ) corpus, in progress. Romance / identity-theft /
