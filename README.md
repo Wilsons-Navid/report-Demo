@@ -17,7 +17,7 @@ four classes, served as a REST API and a web front-end.
 
 *(The API is on Render's free tier — it sleeps after ~15 min idle, so the first request may take ~30–50s to cold-start.)*
 
-**Full build walkthrough + video guide:** [`docs/PROJECT_WALKTHROUGH.md`](docs/PROJECT_WALKTHROUGH.md)
+**Full build walkthrough + video guide:** [`docs/PROJECT_WALKTHROUGH.md`](docs/PROJECT_WALKTHROUGH.md) (Word version: `docs/PROJECT_WALKTHROUGH.docx`)
 
 > **Status — initial model.** Trained on source-provenance labels (Nazario phishing corpus,
 > MOZ-Smishing, Mendeley smishing, UCI SMS). The final evaluation uses a human
