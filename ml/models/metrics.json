@@ -1,0 +1,218 @@
+{
+  "tfidf_logreg": {
+    "dev": {
+      "accuracy": 0.9487179487179487,
+      "macro_f1": 0.9236486828287778,
+      "per_class": {
+        "advance_fee_fraud": {
+          "precision": 0.7906976744186046,
+          "recall": 0.7906976744186046,
+          "f1": 0.7906976744186046
+        },
+        "mobile_money_fraud": {
+          "precision": 0.9876543209876543,
+          "recall": 1.0,
+          "f1": 0.9937888198757764
+        },
+        "phishing": {
+          "precision": 0.9658119658119658,
+          "recall": 0.9416666666666667,
+          "f1": 0.9535864978902954
+        },
+        "not_a_scam": {
+          "precision": 0.9361702127659575,
+          "recall": 0.9777777777777777,
+          "f1": 0.9565217391304348
+        }
+      },
+      "confusion": [
+        [
+          34,
+          0,
+          8,
+          1
+        ],
+        [
+          0,
+          80,
+          0,
+          0
+        ],
+        [
+          9,
+          1,
+          339,
+          11
+        ],
+        [
+          0,
+          0,
+          4,
+          176
+        ]
+      ],
+      "report": "                    precision    recall  f1-score   support\n\n advance_fee_fraud       0.79      0.79      0.79        43\nmobile_money_fraud       0.99      1.00      0.99        80\n          phishing       0.97      0.94      0.95       360\n        not_a_scam       0.94      0.98      0.96       180\n\n          accuracy                           0.95       663\n         macro avg       0.92      0.93      0.92       663\n      weighted avg       0.95      0.95      0.95       663\n"
+    },
+    "test": {
+      "accuracy": 0.9578313253012049,
+      "macro_f1": 0.9434884831088358,
+      "per_class": {
+        "advance_fee_fraud": {
+          "precision": 0.8260869565217391,
+          "recall": 0.9047619047619048,
+          "f1": 0.8636363636363636
+        },
+        "mobile_money_fraud": {
+          "precision": 1.0,
+          "recall": 0.9753086419753086,
+          "f1": 0.9875
+        },
+        "phishing": {
+          "precision": 0.9798270893371758,
+          "recall": 0.9418282548476454,
+          "f1": 0.96045197740113
+        },
+        "not_a_scam": {
+          "precision": 0.9322916666666666,
+          "recall": 0.9944444444444445,
+          "f1": 0.9623655913978495
+        }
+      },
+      "confusion": [
+        [
+          38,
+          0,
+          4,
+          0
+        ],
+        [
+          0,
+          79,
+          2,
+          0
+        ],
+        [
+          8,
+          0,
+          340,
+          13
+        ],
+        [
+          0,
+          0,
+          1,
+          179
+        ]
+      ],
+      "report": "                    precision    recall  f1-score   support\n\n advance_fee_fraud       0.83      0.90      0.86        42\nmobile_money_fraud       1.00      0.98      0.99        81\n          phishing       0.98      0.94      0.96       361\n        not_a_scam       0.93      0.99      0.96       180\n\n          accuracy                           0.96       664\n         macro avg       0.93      0.95      0.94       664\n      weighted avg       0.96      0.96      0.96       664\n"
+    }
+  },
+  "tfidf_rf": {
+    "dev": {
+      "accuracy": 0.9411764705882353,
+      "macro_f1": 0.9128928810746992,
+      "per_class": {
+        "advance_fee_fraud": {
+          "precision": 1.0,
+          "recall": 0.627906976744186,
+          "f1": 0.7714285714285715
+        },
+        "mobile_money_fraud": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0
+        },
+        "phishing": {
+          "precision": 0.9426229508196722,
+          "recall": 0.9583333333333334,
+          "f1": 0.9504132231404959
+        },
+        "not_a_scam": {
+          "precision": 0.9052631578947369,
+          "recall": 0.9555555555555556,
+          "f1": 0.9297297297297298
+        }
+      },
+      "confusion": [
+        [
+          27,
+          0,
+          13,
+          3
+        ],
+        [
+          0,
+          80,
+          0,
+          0
+        ],
+        [
+          0,
+          0,
+          345,
+          15
+        ],
+        [
+          0,
+          0,
+          8,
+          172
+        ]
+      ],
+      "report": "                    precision    recall  f1-score   support\n\n advance_fee_fraud       1.00      0.63      0.77        43\nmobile_money_fraud       1.00      1.00      1.00        80\n          phishing       0.94      0.96      0.95       360\n        not_a_scam       0.91      0.96      0.93       180\n\n          accuracy                           0.94       663\n         macro avg       0.96      0.89      0.91       663\n      weighted avg       0.94      0.94      0.94       663\n"
+    },
+    "test": {
+      "accuracy": 0.9503012048192772,
+      "macro_f1": 0.9282322184565497,
+      "per_class": {
+        "advance_fee_fraud": {
+          "precision": 0.9393939393939394,
+          "recall": 0.7380952380952381,
+          "f1": 0.8266666666666667
+        },
+        "mobile_money_fraud": {
+          "precision": 1.0,
+          "recall": 0.9753086419753086,
+          "f1": 0.9875
+        },
+        "phishing": {
+          "precision": 0.9561643835616438,
+          "recall": 0.9667590027700831,
+          "f1": 0.9614325068870524
+        },
+        "not_a_scam": {
+          "precision": 0.9197860962566845,
+          "recall": 0.9555555555555556,
+          "f1": 0.9373297002724795
+        }
+      },
+      "confusion": [
+        [
+          31,
+          0,
+          7,
+          4
+        ],
+        [
+          0,
+          79,
+          1,
+          1
+        ],
+        [
+          2,
+          0,
+          349,
+          10
+        ],
+        [
+          0,
+          0,
+          8,
+          172
+        ]
+      ],
+      "report": "                    precision    recall  f1-score   support\n\n advance_fee_fraud       0.94      0.74      0.83        42\nmobile_money_fraud       1.00      0.98      0.99        81\n          phishing       0.96      0.97      0.96       361\n        not_a_scam       0.92      0.96      0.94       180\n\n          accuracy                           0.95       664\n         macro avg       0.95      0.91      0.93       664\n      weighted avg       0.95      0.95      0.95       664\n"
+    }
+  }
+}

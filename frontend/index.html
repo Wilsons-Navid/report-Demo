@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Signal — Scam Message Classifier</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<svg class="grain" xmlns="http://www.w3.org/2000/svg">
+  <filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.8" numOctaves="3" stitchTiles="stitch"/></filter>
+  <rect width="100%" height="100%" filter="url(#noise)"/>
+</svg>
+
+<header class="masthead">
+  <div class="brand">
+    <span class="mark">◢◣</span>
+    <span class="wordmark">SIGNAL</span>
+  </div>
+  <div class="meta-line">
+    <span class="status" id="apiStatus"><i></i><span id="apiStatusText">connecting…</span></span>
+    <span class="divider">/</span>
+    <span>scam message classifier</span>
+  </div>
+</header>
+
+<main class="console">
+  <!-- INPUT -->
+  <section class="panel input">
+    <div class="panel-tag">01 — Intercept</div>
+    <h1 class="headline">Paste a message.<br/><em>Read its intent.</em></h1>
+
+    <textarea id="message" spellcheck="false"
+      placeholder="e.g. URGENT! Your number won a £2000 prize — call 09061790121 to claim before it expires."></textarea>
+
+    <div class="examples">
+      <span class="examples-label">try a specimen</span>
+      <div class="chips" id="chips"></div>
+    </div>
+
+    <button id="classify" class="run">
+      <span class="run-label">Classify</span>
+      <span class="run-arrow">↘</span>
+    </button>
+  </section>
+
+  <!-- OUTPUT -->
+  <section class="panel output" id="output" data-state="empty">
+    <div class="panel-tag">02 — Verdict</div>
+
+    <div class="empty-state" id="emptyState">
+      <div class="empty-glyph">⌖</div>
+      <p>Awaiting a signal. The model returns a category and a confidence profile across four fraud classes.</p>
+    </div>
+
+    <div class="verdict" id="verdict" hidden>
+      <div class="verdict-conf"><span id="confPct">—</span><small>confidence</small></div>
+      <div class="verdict-name" id="verdictName">—</div>
+      <div class="verdict-note" id="verdictNote"></div>
+    </div>
+
+    <div class="bars" id="bars" hidden></div>
+  </section>
+</main>
+
+<footer class="footplate">
+  <span>Initial model · TF-IDF + Logistic Regression · test macro-F1 <b>0.94</b></span>
+  <span class="api-readout">API → <code id="apiReadout"></code></span>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>

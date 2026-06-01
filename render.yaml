@@ -1,0 +1,21 @@
+# Render deployment for the Scam-Message Classifier API (FastAPI).
+# Render → New → Blueprint → point at this repo. Free tier works (the service
+# sleeps after ~15 min idle and cold-starts on the next request).
+#
+# The model is TRAINED AT BUILD TIME from the committed demo_labeled.jsonl, so
+# the scikit-learn version on Render always matches the one that pickled it
+# (no cross-version unpickle risk).
+services:
+  - type: web
+    name: scam-classifier-api
+    runtime: python
+    region: oregon            # or frankfurt — pick the closest
+    plan: free
+    buildCommand: "pip install -r ml/requirements.txt && python ml/src/demo_model.py"
+    startCommand: "uvicorn ml.serve.app:app --host 0.0.0.0 --port $PORT"
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.11.9"
+      - key: ALLOWED_ORIGINS
+        # lock this to your Vercel URL once deployed, e.g. https://your-app.vercel.app
+        value: "*"

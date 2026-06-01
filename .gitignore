@@ -1,0 +1,17 @@
+# data: keep the demo dataset, exclude bulky raw downloads
+ml/data/raw/
+ml/data/labelled/*.jsonl
+!ml/data/labelled/demo_labeled.jsonl
+ml/data/audits/*.jsonl
+
+# python
+**/__pycache__/
+*.pyc
+.venv/
+
+# notebooks
+**/.ipynb_checkpoints/
+
+# tooling
+.vercel/
+node_modules/

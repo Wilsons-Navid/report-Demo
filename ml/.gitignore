@@ -1,0 +1,7 @@
+data/raw/
+data/labelled/*.jsonl
+!data/labelled/demo_labeled.jsonl
+data/audits/*.jsonl
+notebooks/.ipynb_checkpoints/
+__pycache__/
+*.pyc

@@ -1,0 +1,15 @@
+{
+  "best_model": "tfidf_logreg",
+  "classes": [
+    "advance_fee_fraud",
+    "mobile_money_fraud",
+    "phishing",
+    "not_a_scam"
+  ],
+  "n_train": 3095,
+  "n_dev": 663,
+  "n_test": 664,
+  "test_macro_f1": 0.9434884831088358,
+  "test_accuracy": 0.9578313253012049,
+  "note": "INITIAL model on source-provenance labels; final eval uses the human \u03ba-verified corpus (Objective 3)."
+}
