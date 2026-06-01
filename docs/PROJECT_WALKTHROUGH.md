@@ -54,22 +54,12 @@ It turned out news articles *report about* fraud rather than *being* scam messag
 contributed little usable signal — a documented finding. The institutional advisory sites
 (ngCERT, ANTIC, EFCC) are blocked by anti-bot protection.
 
-### 2.2 Pipeline
+### 2.2 How the dataset was built
 
-Scripts in `ml/scripts/`, run in order:
-
-```
-01_download_public.py     fetch UCI (auto)
-07_scrape_regional.py     harvest the regional news stream
-07b_ingest_extra_public.py   parse Nazario mbox + Mendeley + MOZ into JSONL
-02_normalise.py           merge all sources → schema-validate → dedup → length-filter
-                          (scaled near-duplicate detection via Jaccard size-banding)
-08_build_worklist.py      prioritise + suggest labels (source-aware)
-10_build_demo_dataset.py  assemble the labelled demo dataset
-```
-
-After normalisation the pooled corpus is **8,536** unique messages. The demo training set
-(`ml/data/labelled/demo_labeled.jsonl`) is **4,422** labelled rows:
+Each source is downloaded, parsed into a common schema, merged, schema-validated,
+de-duplicated (exact + near-duplicate via Jaccard size-banding), length-filtered, and
+labelled. The pooled corpus is **8,536** unique messages; the demo training set
+(`ml/data/labelled/demo_labeled.jsonl`, **committed in this repo**) is **4,422** labelled rows:
 
 | Class | Count |
 |---|---|
@@ -78,9 +68,9 @@ After normalisation the pooled corpus is **8,536** unique messages. The demo tra
 | mobile_money_fraud | 538 |
 | advance_fee_fraud | 283 |
 
-Languages: English (3,885) + Portuguese (537). The κ-audit tooling for the final corpus
-(`03b_assisted_label.py`, `04_create_audit_sample.py`, `05_compute_kappa.py`,
-`06_split.py`) is in the repo but not part of this initial model.
+Languages: English (3,885) + Portuguese (537). The full corpus-construction pipeline
+(scrapers, normaliser, and the κ-audit tooling for the final human-verified corpus) lives
+in the separate research workspace; this demo repo ships only the assembled dataset.
 
 ---
 
@@ -146,9 +136,7 @@ cold-starts (~30–50s). Warm it before demoing.
 ml/
 ├── notebooks/model_demo.ipynb     executed model notebook (EDA, architecture, metrics)
 ├── src/demo_model.py              TF-IDF + LogReg / RandomForest pipelines
-├── src/{schema,taxonomy,loaders,scrapers,labelling,auto_label}.py
 ├── serve/app.py                   FastAPI app (Swagger UI)
-├── scripts/                       data pipeline 01..10 + κ-audit tooling
 ├── data/labelled/demo_labeled.jsonl   the 4,422-row labelled dataset
 ├── models/                        trained classifier + metrics.json
 ├── DEMONSTRATION.md               demo-focused readme
@@ -156,6 +144,7 @@ ml/
 frontend/                          static web UI (Vercel)
 docs/
 ├── PROJECT_WALKTHROUGH.md         this file
+├── PROJECT_WALKTHROUGH.docx       Word version
 └── screens/                       interface screenshots
 render.yaml                        Render blueprint for the API
 ```

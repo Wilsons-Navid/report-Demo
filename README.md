@@ -41,7 +41,6 @@ ml/
 ├── notebooks/model_demo.ipynb   the model notebook (EDA, architecture, metrics, inference)
 ├── src/demo_model.py            TF-IDF + LogReg / RandomForest pipelines
 ├── serve/app.py                 FastAPI app (Swagger UI) — the deployment MVP
-├── scripts/                     data pipeline (download → normalise → label → build dataset)
 ├── data/labelled/demo_labeled.jsonl   4,422 labelled messages
 └── models/                      trained classifier + metrics
 frontend/                        static web UI (deploys to Vercel)
@@ -57,9 +56,10 @@ pip install -r ml/requirements.txt
 
 ## Reproduce the model
 
+The labelled dataset is committed, so training is one step:
+
 ```bash
 python ml/src/demo_model.py            # trains both models, saves best + metrics to ml/models/
-python ml/notebooks/build_model_notebook.py   # (optional) regenerate the executed notebook
 ```
 
 ## Run the API (deployment MVP, Swagger UI)

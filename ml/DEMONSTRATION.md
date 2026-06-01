@@ -40,18 +40,15 @@ notebook.
 
 ```
 ml/
-├── data/
-│   ├── raw/            UCI, Nazario, Mendeley smishing, MOZ-Smishing (downloaders in scripts/)
-│   └── labelled/       demo_labeled.jsonl (4,422 labelled messages)
-├── src/
-│   ├── loaders.py      dataset loaders            demo_model.py   TF-IDF + LR/RF pipelines
-│   └── schema.py, taxonomy.py, auto_label.py, scrapers.py, labelling.py
-├── scripts/            01..10 data pipeline (download → normalise → label → build dataset)
-├── notebooks/
-│   └── model_demo.ipynb    ← the model notebook (EDA, architecture, metrics, inference)
-├── serve/
-│   └── app.py          FastAPI app (Swagger UI deployment MVP)
-└── models/             scam_classifier.joblib + metrics.json (produced by training)
+├── data/labelled/demo_labeled.jsonl   the 4,422-row labelled dataset
+├── src/demo_model.py                  TF-IDF + LogReg / RandomForest pipelines
+├── notebooks/model_demo.ipynb         the model notebook (EDA, architecture, metrics)
+├── serve/app.py                       FastAPI app (Swagger UI deployment MVP)
+├── models/                            scam_classifier.joblib + metrics
+└── requirements.txt
+frontend/                              static web UI (Vercel)
+docs/                                  walkthrough + interface screenshots
+render.yaml                            Render deploy for the API
 ```
 
 ## Setup
@@ -64,15 +61,11 @@ pip install -r ml/requirements.txt
 
 ## Reproduce the model
 
+The labelled dataset (`ml/data/labelled/demo_labeled.jsonl`) is provided, so training is one step:
+
 ```bash
-# 1. assemble the labelled demo dataset (from the downloaded sources)
-python ml/scripts/10_build_demo_dataset.py
-
-# 2. train both models, save the best + metrics to ml/models/
+# train both models, save the best + metrics to ml/models/
 python ml/src/demo_model.py
-
-# 3. (optional) regenerate the executed notebook
-python ml/notebooks/build_model_notebook.py
 ```
 
 The notebook `ml/notebooks/model_demo.ipynb` already contains executed outputs
@@ -101,9 +94,9 @@ Endpoints: `GET /health`, `POST /predict`, `POST /predict_batch`, Swagger at `/d
 
 ## Designs / screenshots
 
-_Add screenshots before submitting:_
-- `docs/screens/notebook_metrics.png` — the metrics + confusion-matrix cells
-- `docs/screens/swagger_predict.png` — the Swagger `/predict` request + response
+- `docs/screens/frontend.png` — the web app with a live classification result
+- `docs/screens/swagger.png` — the Swagger API
+- Notebook visualisations are embedded in `ml/notebooks/model_demo.ipynb`.
 
 ## Deployment plan
 
