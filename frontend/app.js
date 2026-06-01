@@ -6,7 +6,7 @@
 // ─────────────────────────────────────────────────────────────
 const API_BASE =
   new URLSearchParams(location.search).get("api") ||
-  "http://127.0.0.1:8000";
+  "https://scam-classifier-api.onrender.com";
 
 const CATS = {
   phishing:           { name: "Phishing",            color: "#ff5a4d", note: "Credential / link harvesting" },
