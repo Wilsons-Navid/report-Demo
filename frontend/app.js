@@ -60,6 +60,7 @@ async function classify() {
   if (!text) { msg.focus(); return; }
 
   runBtn.disabled = true; runBtn.classList.add("loading");
+  document.body.classList.add("scanning");
   runBtn.querySelector(".run-label").textContent = "Analysing";
 
   try {
@@ -75,10 +76,23 @@ async function classify() {
     showError(e.message);
   } finally {
     runBtn.disabled = false; runBtn.classList.remove("loading");
+    document.body.classList.remove("scanning");
     runBtn.querySelector(".run-label").textContent = "Classify";
   }
 }
 runBtn.onclick = classify;
+
+// count-up for the confidence number (respects reduced-motion)
+const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+function countUp(el, target) {
+  if (reduceMotion) { el.textContent = target + "%"; return; }
+  const dur = 750, start = performance.now();
+  (function step(now) {
+    const p = Math.min(1, (now - start) / dur);
+    el.textContent = Math.round(target * (1 - Math.pow(1 - p, 3))) + "%";
+    if (p < 1) requestAnimationFrame(step);
+  })(start);
+}
 msg.addEventListener("keydown", (e) => {
   if ((e.metaKey || e.ctrlKey) && e.key === "Enter") classify();
 });
@@ -90,7 +104,7 @@ function render(data) {
 
   const verdict = $("verdict");
   verdict.style.setProperty("--vc", meta.color);
-  $("confPct").textContent = Math.round((data.confidence ?? 0) * 100) + "%";
+  countUp($("confPct"), Math.round((data.confidence ?? 0) * 100));
   $("verdictName").textContent = meta.name;
   $("verdictNote").textContent = meta.note;
   verdict.hidden = false;

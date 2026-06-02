@@ -144,3 +144,43 @@ textarea#message:focus{outline:none;border-color:var(--amber);box-shadow:0 0 0 3
   .console{grid-template-columns:1fr}
   .headline br{display:none}
 }
+
+/* ============ motion ============ */
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes slideDown{from{opacity:0;transform:translateY(-12px)}to{opacity:1;transform:none}}
+@keyframes dotPulse{0%,100%{box-shadow:0 0 0 0 rgba(79,209,160,.55)}50%{box-shadow:0 0 12px 2px rgba(79,209,160,.55)}}
+@keyframes sheen{0%{transform:translateX(-140%) skewX(-18deg)}55%,100%{transform:translateX(260%) skewX(-18deg)}}
+@keyframes scanbeam{0%{transform:translateY(-60%);opacity:0}12%{opacity:1}88%{opacity:1}100%{transform:translateY(280%);opacity:0}}
+@keyframes winGlow{0%,100%{box-shadow:inset 0 1px 0 rgba(255,255,255,.5),0 0 10px -2px var(--bc)}50%{box-shadow:inset 0 1px 0 rgba(255,255,255,.65),0 0 22px 1px var(--bc)}}
+
+/* staggered page load */
+.masthead{animation:slideDown .6s cubic-bezier(.2,.8,.2,1) both}
+.headline{animation:fadeUp .6s cubic-bezier(.2,.8,.2,1) .14s both}
+textarea#message{animation:fadeUp .6s cubic-bezier(.2,.8,.2,1) .24s both}
+.examples{animation:fadeUp .6s cubic-bezier(.2,.8,.2,1) .32s both}
+.run{animation:fadeUp .6s cubic-bezier(.2,.8,.2,1) .40s both}
+
+/* live status dot pulse */
+.status.up i{animation:dotPulse 2.2s ease-in-out infinite}
+
+/* glossy sheen sweep across the button */
+.run{position:relative;overflow:hidden}
+.run::after{content:"";position:absolute;top:0;left:0;width:42%;height:100%;
+  background:linear-gradient(100deg,transparent,rgba(255,255,255,.5),transparent);
+  transform:translateX(-140%) skewX(-18deg);animation:sheen 5.5s ease 2s infinite;pointer-events:none}
+.run:hover::after{animation:sheen 1s ease}
+
+/* scan beam over the verdict panel while classifying */
+.output{overflow:hidden}
+.output::after{content:"";position:absolute;left:0;right:0;top:0;height:42%;opacity:0;pointer-events:none;
+  background:linear-gradient(180deg,transparent,rgba(246,177,58,.12),transparent)}
+body.scanning .output::after{animation:scanbeam 1.15s ease-in-out infinite}
+
+/* result reveal + winning-bar glow */
+.output[data-state="result"] .verdict{animation:fadeUp .5s ease both}
+.output[data-state="result"] .bars{animation:fadeUp .5s ease .08s both}
+.bar-row.win .bar-fill{animation:winGlow 2.4s ease-in-out 1s 2}
+
+@media (prefers-reduced-motion: reduce){
+  *,*::before,*::after{animation:none !important;transition:none !important}
+}
