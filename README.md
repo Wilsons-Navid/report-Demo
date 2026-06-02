@@ -11,7 +11,8 @@ classes. It runs as a REST API and a web app.
 | `not_a_scam` | "Hey, are we still meeting for lunch at 1pm?" |
 
 **Live demo:**
-- Web app → https://frontend-inky-xi-23.vercel.app
+- Web app (multi-page demo) → https://scamscan-web.vercel.app · code in [`scamscan-web/`](scamscan-web/)
+- Earlier static demo → https://frontend-inky-xi-23.vercel.app · code in `frontend/`
 - API (Swagger) → https://scam-classifier-api.onrender.com/docs
 - Repo → https://github.com/Wilsons-Navid/report-Demo
 
