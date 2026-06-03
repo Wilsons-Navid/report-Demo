@@ -6,7 +6,8 @@ four fraud classes, then shows the **risk**, **what to do next**, and **who to r
 **Live:** https://scamscan-web.vercel.app
 
 Next.js 16 · React 19 · TypeScript · Tailwind v4 · Framer Motion · GSAP. Visual system follows a
-Stripe-derived token set (`DESIGN.md`, via getdesign.md). Real photography from Pexels.
+Stripe-derived token set (`DESIGN.md`, via getdesign.md). Photography from Pexels — African
+subjects and African currency throughout.
 
 Run: `npm install && npm run dev`. Build: `npm run build`. Deploy: `npx vercel deploy --prod`.
 Set `NEXT_PUBLIC_API_BASE` in `.env.local` to point at a different API.
