@@ -104,7 +104,7 @@ export default function FuturePage() {
       <section className="px-6 pt-28">
         <Reveal className="mx-auto max-w-4xl rounded-3xl glass-card p-8 md:p-10">
           <div className="flex items-start gap-4">
-            <span className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-[var(--brand-ink)]/15 text-[var(--brand-ink)]">
+            <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-[var(--brand-ink)]/15 text-[var(--brand-ink)]">
               <Network className="h-5 w-5" />
             </span>
             <div>
@@ -128,8 +128,8 @@ export default function FuturePage() {
           </p>
           <Link
             href="/classify"
-            className="inline-flex shrink-0 items-center gap-2 rounded-2xl bg-[var(--brand-ink)] px-6 py-3.5 font-semibold text-white transition hover:-translate-y-0.5"
-            style={{ boxShadow: "0 16px 36px -14px rgba(34,211,238,.7), inset 0 1px 0 rgba(255,255,255,.5)" }}
+            className="inline-flex shrink-0 items-center gap-2 rounded-full bg-[var(--brand-ink)] px-6 py-3.5 font-semibold text-white transition hover:-translate-y-0.5"
+            style={{ boxShadow: "0 16px 36px -14px rgba(83,58,253,.45), inset 0 1px 0 rgba(255,255,255,.5)" }}
           >
             Try the live demo <ArrowRight className="h-4 w-4" />
           </Link>

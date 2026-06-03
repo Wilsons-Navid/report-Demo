@@ -84,8 +84,8 @@ export function Classifier() {
           type="button"
           onClick={run}
           disabled={loading}
-          className="mt-6 flex w-full items-center justify-center gap-2 rounded-xl bg-[var(--brand-ink)] py-3.5 font-semibold text-white transition hover:-translate-y-0.5 disabled:opacity-60"
-          style={{ boxShadow: "0 14px 32px -12px rgba(34,211,238,.7), inset 0 1px 0 rgba(255,255,255,.5)" }}
+          className="mt-6 flex w-full items-center justify-center gap-2 rounded-full bg-[var(--brand-ink)] py-3.5 font-semibold text-white transition hover:-translate-y-0.5 disabled:opacity-60"
+          style={{ boxShadow: "0 14px 32px -12px rgba(83,58,253,.45), inset 0 1px 0 rgba(255,255,255,.5)" }}
         >
           {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <Search className="h-4 w-4" />}
           {loading ? "Analysing" : "Classify"}
@@ -93,7 +93,7 @@ export function Classifier() {
         {loading && (
           <motion.div
             className="pointer-events-none absolute inset-x-0 top-0 h-1/3"
-            style={{ background: "linear-gradient(180deg,transparent,rgba(34,211,238,.16),transparent)" }}
+            style={{ background: "linear-gradient(180deg,transparent,rgba(83,58,253,.16),transparent)" }}
             animate={{ y: ["-60%", "320%"] }}
             transition={{ duration: 1.1, repeat: Infinity, ease: "easeInOut" }}
           />

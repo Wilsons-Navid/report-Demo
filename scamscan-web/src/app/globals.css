@@ -131,13 +131,14 @@
 
 /* ── ScamScan · light design system ── */
 :root {
-  --brand: #0891b2;        /* cyan-600 — accent fills */
-  --brand-ink: #0e7490;    /* cyan-700 — links / accent text, AA on white */
-  --ink: #0b1220;          /* primary text */
-  --bg: #eef2f8;           /* soft cool page background, not pure white */
+  /* Tokens from Stripe DESIGN.md (getdesign.md) */
+  --brand: #533afd;        /* Stripe blurple — accent fills */
+  --brand-ink: #4434d4;    /* deeper blurple — links / accent text, AA on white */
+  --ink: #0d253d;          /* Stripe deep navy ink */
+  --bg: #f6f9fc;           /* Stripe canvas-soft */
   --surface: #ffffff;      /* cards / panels */
-  --line: rgba(15, 23, 42, 0.10);
-  --c-phishing: #e11d48;   /* readable on light surfaces */
+  --line: #e3e8ee;         /* Stripe hairline */
+  --c-phishing: #e11d48;   /* readable per-class semantics on light */
   --c-advance: #b45309;
   --c-momo: #6d28d9;
   --c-safe: #047857;
@@ -155,8 +156,9 @@ html, body { background: var(--bg); color: var(--ink); }
 .aurora {
   position: fixed; inset: 0; z-index: -3; pointer-events: none;
   background:
-    radial-gradient(60% 50% at 8% -8%, rgba(8, 145, 178, 0.10), transparent 60%),
-    radial-gradient(52% 46% at 96% 4%, rgba(99, 102, 241, 0.08), transparent 60%),
+    radial-gradient(40% 38% at 12% -6%, rgba(83, 58, 253, 0.14), transparent 60%),
+    radial-gradient(40% 34% at 50% -10%, rgba(99, 217, 255, 0.10), transparent 60%),
+    radial-gradient(44% 40% at 90% -4%, rgba(244, 107, 238, 0.09), transparent 60%),
     var(--bg);
 }
 /* retire the dark-only atmosphere layers */
@@ -189,9 +191,11 @@ body > main, body > nav, body > header, body > footer { position: relative; z-in
 .glass-card, .glass {
   background: var(--surface);
   border: 1px solid var(--line);
+  /* Stripe soft, blue-tinted layered shadow */
   box-shadow:
-    0 1px 2px rgba(15, 23, 42, 0.04),
-    0 16px 40px -22px rgba(15, 23, 42, 0.22);
+    0 1px 1px rgba(13, 37, 61, 0.04),
+    0 8px 16px -8px rgba(0, 55, 112, 0.10),
+    0 18px 40px -24px rgba(0, 55, 112, 0.16);
 }
 
 @media (prefers-reduced-motion: reduce) {

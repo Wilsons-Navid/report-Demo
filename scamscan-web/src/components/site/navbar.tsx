@@ -48,7 +48,7 @@ export function Navbar() {
         <Link
           href="/classify"
           className="rounded-full bg-[var(--brand-ink)] px-4 py-1.5 text-sm font-semibold text-white transition-transform hover:-translate-y-0.5"
-          style={{ boxShadow: "0 8px 22px -10px rgba(34,211,238,.7)" }}
+          style={{ boxShadow: "0 8px 22px -10px rgba(83,58,253,.45)" }}
         >
           Try it
         </Link>

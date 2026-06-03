@@ -56,8 +56,8 @@ export function Hero() {
           >
             <Link
               href="/classify"
-              className="group inline-flex items-center gap-2 rounded-2xl bg-[var(--brand-ink)] px-7 py-4 font-semibold text-white transition hover:-translate-y-0.5"
-              style={{ boxShadow: "0 18px 40px -16px rgba(14,116,144,.55)" }}
+              className="group inline-flex items-center gap-2 rounded-full bg-[var(--brand-ink)] px-7 py-4 font-semibold text-white transition hover:-translate-y-0.5"
+              style={{ boxShadow: "0 18px 40px -16px rgba(83,58,253,.45)" }}
             >
               Try the classifier
               <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />

@@ -66,8 +66,8 @@ export default function HowItWorksPage() {
         <Reveal className="mx-auto flex max-w-5xl flex-col items-start gap-4 sm:flex-row sm:items-center">
           <Link
             href="/classify"
-            className="inline-flex items-center gap-2 rounded-2xl bg-[var(--brand-ink)] px-6 py-3.5 font-semibold text-white transition hover:-translate-y-0.5"
-            style={{ boxShadow: "0 16px 36px -14px rgba(34,211,238,.7), inset 0 1px 0 rgba(255,255,255,.5)" }}
+            className="inline-flex items-center gap-2 rounded-full bg-[var(--brand-ink)] px-6 py-3.5 font-semibold text-white transition hover:-translate-y-0.5"
+            style={{ boxShadow: "0 16px 36px -14px rgba(83,58,253,.45), inset 0 1px 0 rgba(255,255,255,.5)" }}
           >
             Try it live <ArrowRight className="h-4 w-4" />
           </Link>
