@@ -2,10 +2,10 @@
 
 import { Smartphone, Link2, ShieldAlert, CheckCircle2 } from "lucide-react";
 import RadialOrbitalTimeline from "@/components/ui/radial-orbital-timeline";
-import { CATS } from "@/lib/api";
 
 // The four classes as an orbital constellation. energy = per-class test F1,
 // relatedIds = the classes the model most confuses each one with.
+// Colours are the readable (darker) per-class hues for the light theme.
 const fraudData = [
   {
     id: 1,
@@ -18,7 +18,7 @@ const fraudData = [
     relatedIds: [2],
     status: "completed" as const,
     energy: 99,
-    color: CATS.mobile_money_fraud.color,
+    color: "#6d28d9",
   },
   {
     id: 2,
@@ -31,7 +31,7 @@ const fraudData = [
     relatedIds: [1, 3],
     status: "completed" as const,
     energy: 96,
-    color: CATS.phishing.color,
+    color: "#e11d48",
   },
   {
     id: 3,
@@ -44,7 +44,7 @@ const fraudData = [
     relatedIds: [2, 4],
     status: "in-progress" as const,
     energy: 86,
-    color: CATS.advance_fee_fraud.color,
+    color: "#b45309",
   },
   {
     id: 4,
@@ -57,7 +57,7 @@ const fraudData = [
     relatedIds: [3],
     status: "completed" as const,
     energy: 96,
-    color: CATS.not_a_scam.color,
+    color: "#047857",
   },
 ];
 

@@ -64,8 +64,8 @@ export default function Home() {
           <div
             className="relative overflow-hidden rounded-[2rem] border border-slate-200"
             style={{
-              background: "radial-gradient(120% 90% at 50% 0%, #122441 0%, #0a1224 55%, #070b16 100%)",
-              boxShadow: "0 30px 80px -42px rgba(15,23,42,.5)",
+              background: "radial-gradient(120% 90% at 50% -10%, #ffffff 0%, #eef2fb 65%, #e8edfb 100%)",
+              boxShadow: "0 1px 2px rgba(15,23,42,.04), 0 24px 60px -36px rgba(0,55,112,.22)",
             }}
           >
             <FraudOrbital />
