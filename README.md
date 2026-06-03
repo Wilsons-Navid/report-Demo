@@ -84,9 +84,23 @@ cd frontend && python -m http.server 5500
 
 ## Designs / interfaces
 
-**Web front-end** (live classification result)
+**Web app** — [scamscan-web.vercel.app](https://scamscan-web.vercel.app)
 
-![Front-end](docs/screens/frontend.png)
+Home
+
+![Home](docs/screens/home.png)
+
+The four fraud classes
+
+![Fraud classes](docs/screens/orbital.png)
+
+Live demo
+
+![Classify](docs/screens/classify.png)
+
+Results
+
+![Results](docs/screens/results.png)
 
 **API (Swagger UI)**
 
