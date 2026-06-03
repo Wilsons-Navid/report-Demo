@@ -16,6 +16,7 @@ interface TimelineItem {
   status: "completed" | "in-progress" | "pending";
   energy: number;
   color?: string;
+  image?: string;
 }
 
 interface RadialOrbitalTimelineProps {
@@ -236,8 +237,18 @@ export default function RadialOrbitalTimeline({
 
                 {isExpanded && (
                   <Card className="absolute left-1/2 top-20 w-64 -translate-x-1/2 overflow-visible border border-slate-200 bg-white shadow-xl">
-                    <div className="absolute -top-3 left-1/2 h-3 w-px -translate-x-1/2 bg-slate-300" />
-                    <CardHeader className="pb-2">
+                    <div className="absolute -top-3 left-1/2 z-10 h-3 w-px -translate-x-1/2 bg-slate-300" />
+                    {item.image && (
+                      <div className="relative h-[74px] w-full overflow-hidden rounded-t-lg">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={item.image} alt="" className="h-full w-full object-cover" />
+                        <div
+                          className="absolute inset-0"
+                          style={{ background: `linear-gradient(180deg, ${accent}38 0%, rgba(255,255,255,0) 46%, rgba(255,255,255,0.97) 100%)` }}
+                        />
+                      </div>
+                    )}
+                    <CardHeader className="pb-2 pt-3">
                       <div className="flex items-center justify-between">
                         <Badge className={`border px-2 text-[10px] font-bold uppercase tracking-wider ${getStatusStyles(item.status)}`}>
                           {item.status === "completed"

@@ -19,6 +19,7 @@ const fraudData = [
     status: "completed" as const,
     energy: 99,
     color: "#6d28d9",
+    image: "/img/card-momo.jpg",
   },
   {
     id: 2,
@@ -32,6 +33,7 @@ const fraudData = [
     status: "completed" as const,
     energy: 96,
     color: "#e11d48",
+    image: "/img/card-phishing.jpg",
   },
   {
     id: 3,
@@ -45,6 +47,7 @@ const fraudData = [
     status: "in-progress" as const,
     energy: 86,
     color: "#b45309",
+    image: "/img/card-advance.jpg",
   },
   {
     id: 4,
@@ -58,6 +61,7 @@ const fraudData = [
     status: "completed" as const,
     energy: 96,
     color: "#047857",
+    image: "/img/card-safe.jpg",
   },
 ];
 
