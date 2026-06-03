@@ -46,7 +46,7 @@ export default function Home() {
           </div>
           <div className="glass-card overflow-hidden rounded-3xl p-2">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/img/person-phone.jpg" alt="A person checking an incoming message on their phone" className="h-64 w-full rounded-[1.1rem] object-cover md:h-80" />
+            <img src="/img/africa-street.jpg" alt="A busy Nairobi street, where SMS and mobile money are part of daily life" className="h-64 w-full rounded-[1.1rem] object-cover md:h-80" />
           </div>
         </Reveal>
       </section>
@@ -61,7 +61,13 @@ export default function Home() {
           </p>
         </Reveal>
         <div className="mx-auto mt-8 max-w-5xl">
-          <div className="overflow-hidden rounded-[2rem] bg-[#070b16]" style={{ boxShadow: "0 30px 80px -42px rgba(15,23,42,.55)" }}>
+          <div
+            className="relative overflow-hidden rounded-[2rem] border border-slate-200"
+            style={{
+              background: "radial-gradient(120% 90% at 50% 0%, #122441 0%, #0a1224 55%, #070b16 100%)",
+              boxShadow: "0 30px 80px -42px rgba(15,23,42,.5)",
+            }}
+          >
             <FraudOrbital />
           </div>
           <p className="mx-auto mt-4 max-w-sm text-center text-xs text-slate-400">

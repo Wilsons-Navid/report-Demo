@@ -34,6 +34,14 @@ export const STEPS: Record<ClassKey, string[]> = {
   ],
 };
 
+/** Plain-language description of what the message is actually trying to do. */
+export const INTENT: Record<ClassKey, string> = {
+  phishing: "This is trying to steal your password or card details.",
+  mobile_money_fraud: "This is after your mobile-money PIN, OTP, or wallet balance.",
+  advance_fee_fraud: "This wants you to pay a fee for money or a prize that does not exist.",
+  not_a_scam: "This reads like an ordinary, everyday message.",
+};
+
 export interface Contact {
   label: string;
   value: string;

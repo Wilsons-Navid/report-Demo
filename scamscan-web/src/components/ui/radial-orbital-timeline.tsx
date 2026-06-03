@@ -92,7 +92,7 @@ export default function RadialOrbitalTimeline({
     if (autoRotate && viewMode === "orbital") {
       rotationTimer = setInterval(() => {
         setRotationAngle((prev) => {
-          const newAngle = (prev + 0.3) % 360;
+          const newAngle = (prev + 0.1) % 360;
           return Number(newAngle.toFixed(3));
         });
       }, 50);
@@ -121,8 +121,8 @@ export default function RadialOrbitalTimeline({
 
     const zIndex = Math.round(100 + 50 * Math.cos(radian));
     const opacity = Math.max(
-      0.4,
-      Math.min(1, 0.4 + 0.6 * ((1 + Math.sin(radian)) / 2)),
+      0.55,
+      Math.min(1, 0.55 + 0.45 * ((1 + Math.sin(radian)) / 2)),
     );
 
     return { x, y, angle, zIndex, opacity };

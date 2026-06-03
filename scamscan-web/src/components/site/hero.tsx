@@ -81,9 +81,9 @@ export function Hero() {
           <div className="glass-card overflow-hidden rounded-[2rem] p-2">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/img/holding-phone.jpg"
-              alt="A person holding a smartphone, reading an incoming message"
-              className="h-[30rem] w-full rounded-[1.6rem] object-cover"
+              src="/img/africa-phone-1.jpg"
+              alt="A young woman in Abuja checking a message on her phone"
+              className="h-[30rem] w-full rounded-[1.6rem] object-cover object-top"
             />
           </div>
           <div className="floaty glass-card absolute -bottom-6 -left-6 w-[280px] rounded-2xl p-5">

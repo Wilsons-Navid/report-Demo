@@ -2,24 +2,22 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { ShieldAlert, ShieldCheck, ExternalLink, CheckCircle2 } from "lucide-react";
-import { catName, type ClassKey } from "@/lib/api";
-import { riskFor, STEPS, REGIONS } from "@/lib/guidance";
+import { ExternalLink, CheckCircle2 } from "lucide-react";
+import type { ClassKey } from "@/lib/api";
+import { riskFor, STEPS, REGIONS, INTENT } from "@/lib/guidance";
 
 const TONE = {
-  high: { bg: "bg-rose-50", border: "border-rose-200", text: "text-rose-700" },
-  elevated: { bg: "bg-amber-50", border: "border-amber-200", text: "text-amber-700" },
-  safe: { bg: "bg-emerald-50", border: "border-emerald-200", text: "text-emerald-700" },
+  high: { bg: "bg-rose-50", border: "border-rose-200", text: "text-rose-800", chip: "bg-rose-700" },
+  elevated: { bg: "bg-amber-50", border: "border-amber-200", text: "text-amber-900", chip: "bg-amber-700" },
+  safe: { bg: "bg-emerald-50", border: "border-emerald-200", text: "text-emerald-800", chip: "bg-emerald-700" },
 } as const;
 
 export function ActionPanel({ category, confidence }: { category: string; confidence: number }) {
   const [regionId, setRegionId] = useState(REGIONS[0].id);
   const risk = riskFor(category, confidence);
-  const safe = risk.level === "safe";
   const steps = STEPS[category as ClassKey] ?? STEPS.not_a_scam;
   const region = REGIONS.find((r) => r.id === regionId) ?? REGIONS[0];
   const tone = TONE[risk.level];
-  const Icon = safe ? ShieldCheck : ShieldAlert;
 
   return (
     <motion.div
@@ -29,11 +27,12 @@ export function ActionPanel({ category, confidence }: { category: string; confid
       className="glass-card rounded-2xl p-6 md:p-7"
     >
       {/* risk banner */}
-      <div className={`flex items-center gap-3 rounded-xl border ${tone.border} ${tone.bg} px-4 py-3`}>
-        <Icon className={`h-5 w-5 shrink-0 ${tone.text}`} />
-        <p className={`text-sm font-semibold ${tone.text}`}>
+      <div className={`flex flex-wrap items-center gap-x-3 gap-y-1.5 rounded-xl border ${tone.border} ${tone.bg} px-4 py-3.5`}>
+        <span className={`rounded-md px-2 py-0.5 text-[11px] font-bold uppercase tracking-wider text-white ${tone.chip}`}>
           {risk.label}
-          {!safe && <span className="font-normal"> — treat this as {catName(category)} until you have verified it</span>}
+        </span>
+        <p className={`text-sm font-medium ${tone.text}`}>
+          {INTENT[category as ClassKey] ?? INTENT.not_a_scam}
         </p>
       </div>
 

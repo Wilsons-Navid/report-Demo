@@ -40,7 +40,7 @@ export default function ProblemPage() {
         <Reveal delay={0.1} className="mx-auto mt-12 max-w-5xl">
           <div className="glass-card overflow-hidden rounded-3xl p-2">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/img/scam-message.jpg" alt="A hand holding a phone showing a suspicious text message" className="h-64 w-full rounded-[1.1rem] object-cover object-center md:h-80" />
+            <img src="/img/africa-street.jpg" alt="A busy African city street, where a single message reaches everyone" className="h-64 w-full rounded-[1.1rem] object-cover object-center md:h-80" />
           </div>
         </Reveal>
       </section>
@@ -86,7 +86,7 @@ export default function ProblemPage() {
           </div>
           <Reveal delay={0.1} className="glass-card overflow-hidden rounded-3xl p-2">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/img/person-phone.jpg" alt="A person reading an incoming message on their phone" className="h-72 w-full rounded-[1.1rem] object-cover md:h-[26rem]" />
+            <img src="/img/africa-phone-1.jpg" alt="A young woman checking a message on her phone" className="h-72 w-full rounded-[1.1rem] object-cover object-top md:h-[26rem]" />
           </Reveal>
         </Reveal>
       </section>
