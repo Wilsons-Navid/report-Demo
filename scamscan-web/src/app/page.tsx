@@ -46,7 +46,7 @@ export default function Home() {
           </div>
           <div className="glass-card overflow-hidden rounded-3xl p-2">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/img/africa-street.jpg" alt="A busy Nairobi street, where SMS and mobile money are part of daily life" className="h-64 w-full rounded-[1.1rem] object-cover md:h-80" />
+            <img src="/img/africa-street.jpg" alt="Banknotes changing hands at a market stall, the cash economy mobile money rides on" className="h-64 w-full rounded-[1.1rem] object-cover md:h-80" />
           </div>
         </Reveal>
       </section>

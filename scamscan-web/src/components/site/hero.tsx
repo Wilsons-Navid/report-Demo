@@ -82,7 +82,7 @@ export function Hero() {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/img/africa-phone-1.jpg"
-              alt="A young woman in Abuja checking a message on her phone"
+              alt="A woman in the city checking an incoming message on her phone"
               className="h-[30rem] w-full rounded-[1.6rem] object-cover object-top"
             />
           </div>
