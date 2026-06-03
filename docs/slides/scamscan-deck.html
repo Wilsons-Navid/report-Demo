@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ScamScan — Initial Software Demo</title>
+
+<!-- Fonts: Sora (display) + Manrope (body) + JetBrains Mono (data) — clean grotesks, not system fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+
+<style>
+/* ===========================================
+   THEME TOKENS — Stripe-derived (getdesign.md)
+   =========================================== */
+:root {
+  --stage-bg: #0a1222;          /* letterbox area behind the scaled stage */
+  --slide-bg: #f6f9fc;          /* Stripe canvas-soft */
+  --ink: #0d253d;               /* Stripe deep navy */
+  --ink-2: #41566f;
+  --ink-mute: #64748d;
+  --brand: #533afd;             /* Stripe blurple */
+  --brand-deep: #4434d4;
+  --surface: #ffffff;
+  --line: #e3e8ee;
+  --c-phishing: #e11d48;
+  --c-advance: #b45309;
+  --c-momo: #6d28d9;
+  --c-safe: #047857;
+
+  --font-display: 'Sora', sans-serif;
+  --font-body: 'Manrope', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --dur: 0.7s;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+/* ===========================================
+   FIXED 16:9 STAGE — mandatory base (viewport-base.css)
+   =========================================== */
+html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; background: var(--stage-bg, #000); }
+.deck-viewport { position: fixed; inset: 0; overflow: hidden; background: var(--stage-bg, #000); }
+.deck-stage { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: hidden; transform-origin: 0 0; background: var(--slide-bg, #fff); }
+.slide { position: absolute; inset: 0; width: 1920px; height: 1080px; overflow: hidden; display: block; visibility: hidden; opacity: 0; pointer-events: none; background: var(--slide-bg, #fff); }
+.slide.active, .slide.visible { visibility: visible; opacity: 1; pointer-events: auto; z-index: 1; }
+img, video, canvas, svg { max-width: 100%; max-height: 100%; }
+.deck-controls { position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%); z-index: 1000; }
+@media print {
+  html, body { width: 1920px; height: auto; overflow: visible; background: #fff; }
+  .deck-viewport { position: static; overflow: visible; background: #fff; }
+  .deck-stage { position: static; width: auto; height: auto; transform: none !important; background: none; }
+  .slide { position: relative; display: block !important; visibility: visible !important; opacity: 1 !important; pointer-events: auto !important; width: 1920px; height: 1080px; break-after: page; page-break-after: always; }
+  .slide:last-child { break-after: auto; page-break-after: auto; }
+  .deck-controls { display: none !important; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.2s !important; }
+}
+
+/* ===========================================
+   SLIDE TYPOGRAPHY + LAYOUT (authored at 1920×1080)
+   =========================================== */
+.slide { font-family: var(--font-body); color: var(--ink); }
+.pad { position: absolute; inset: 0; padding: 110px 130px; display: flex; flex-direction: column; }
+.center { justify-content: center; }
+
+h1, h2, h3 { font-family: var(--font-display); font-weight: 700; letter-spacing: -0.02em; line-height: 1.04; color: var(--ink); }
+.eyebrow { font-family: var(--font-mono); font-size: 22px; font-weight: 500; letter-spacing: 0.28em; text-transform: uppercase; color: var(--brand-deep); }
+.lead { font-size: 33px; line-height: 1.5; color: var(--ink-2); font-weight: 500; }
+.muted { color: var(--ink-mute); }
+.accent { color: var(--brand-deep); }
+.mono { font-family: var(--font-mono); }
+b, strong { font-weight: 700; color: var(--ink); }
+
+/* slide chrome: wordmark + page number, inside the stage but visually subordinate */
+.chrome-mark { position: absolute; top: 56px; left: 130px; display: flex; align-items: center; gap: 12px; font-family: var(--font-display); font-weight: 700; font-size: 24px; letter-spacing: -0.01em; color: var(--ink); }
+.chrome-mark .dot { width: 16px; height: 16px; border-radius: 5px; background: var(--brand); box-shadow: 0 4px 12px rgba(83,58,253,.4); }
+.chrome-page { position: absolute; bottom: 56px; right: 130px; font-family: var(--font-mono); font-size: 20px; color: var(--ink-mute); }
+.chrome-foot { position: absolute; bottom: 56px; left: 130px; font-family: var(--font-mono); font-size: 19px; letter-spacing: .04em; color: var(--ink-mute); }
+
+/* atmospheric gradient mesh (title + closing) */
+.mesh { position: absolute; inset: 0; pointer-events: none;
+  background:
+    radial-gradient(42% 50% at 14% 6%, rgba(83,58,253,.20), transparent 60%),
+    radial-gradient(38% 44% at 60% -6%, rgba(99,217,255,.16), transparent 60%),
+    radial-gradient(46% 52% at 96% 12%, rgba(244,107,238,.14), transparent 62%); }
+
+/* pills / chips */
+.pill { display: inline-flex; align-items: center; gap: 12px; padding: 13px 24px; border-radius: 999px; background: var(--surface); border: 1px solid var(--line); font-weight: 600; font-size: 22px; box-shadow: 0 6px 18px -10px rgba(0,55,112,.25); }
+.pill .pdot { width: 12px; height: 12px; border-radius: 50%; background: var(--brand); }
+.btn { display: inline-flex; align-items: center; gap: 12px; padding: 18px 34px; border-radius: 999px; background: var(--brand-deep); color: #fff; font-weight: 700; font-size: 24px; box-shadow: 0 18px 40px -16px rgba(83,58,253,.55); }
+
+/* cards / surfaces */
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 22px; box-shadow: 0 1px 1px rgba(13,37,61,.04), 0 14px 30px -18px rgba(0,55,112,.18); padding: 40px; }
+
+/* generic helpers */
+.row { display: flex; gap: 28px; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+.grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+.grid4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+.rule { height: 3px; width: 84px; border-radius: 3px; background: var(--brand); }
+
+/* ===========================================
+   REVEAL ANIMATION (triggered by .visible)
+   =========================================== */
+.reveal { opacity: 0; transform: translateY(34px); transition: opacity var(--dur) var(--ease), transform var(--dur) var(--ease); }
+.slide.visible .reveal { opacity: 1; transform: translateY(0); }
+.slide.visible .reveal:nth-child(1) { transition-delay: .05s; }
+.slide.visible .reveal:nth-child(2) { transition-delay: .14s; }
+.slide.visible .reveal:nth-child(3) { transition-delay: .23s; }
+.slide.visible .reveal:nth-child(4) { transition-delay: .32s; }
+.slide.visible .reveal:nth-child(5) { transition-delay: .41s; }
+.slide.visible .reveal:nth-child(6) { transition-delay: .50s; }
+.d1{transition-delay:.1s!important}.d2{transition-delay:.2s!important}.d3{transition-delay:.3s!important}.d4{transition-delay:.4s!important}.d5{transition-delay:.5s!important}.d6{transition-delay:.6s!important}
+
+/* ===========================================
+   SLIDE-SPECIFIC
+   =========================================== */
+/* Title */
+.title-slide .big { font-size: 184px; font-weight: 800; letter-spacing: -0.04em; line-height: .94; }
+.title-slide .tag { font-size: 40px; font-weight: 600; color: var(--ink-2); margin-top: 14px; }
+.title-meta { font-family: var(--font-mono); font-size: 23px; color: var(--ink-mute); letter-spacing: .03em; }
+
+/* section headline */
+.h-xl { font-size: 96px; font-weight: 700; }
+.h-lg { font-size: 72px; font-weight: 700; }
+.h-md { font-size: 46px; font-weight: 700; }
+
+/* stat numbers */
+.stat-num { font-family: var(--font-display); font-weight: 800; font-size: 92px; letter-spacing: -0.03em; color: var(--ink); line-height: 1; }
+.stat-num.accent { color: var(--brand-deep); }
+.stat-label { font-family: var(--font-mono); font-size: 19px; text-transform: uppercase; letter-spacing: .14em; color: var(--ink-mute); margin-top: 12px; }
+
+/* class chip */
+.cls { display: flex; align-items: center; gap: 16px; }
+.cls .sw { width: 16px; height: 16px; border-radius: 5px; flex: none; }
+
+/* pipeline */
+.flow { display: flex; align-items: stretch; gap: 18px; }
+.flow .step { flex: 1; }
+.flow .arr { display: flex; align-items: center; color: var(--ink-mute); font-size: 34px; }
+.step-n { font-family: var(--font-mono); font-size: 18px; color: var(--brand-deep); letter-spacing: .12em; }
+.step-t { font-family: var(--font-display); font-weight: 700; font-size: 30px; margin-top: 6px; }
+.step-d { font-size: 20px; color: var(--ink-mute); line-height: 1.45; margin-top: 10px; }
+
+/* lollipop bar (results) */
+.lp { display: grid; grid-template-columns: 320px 1fr 70px; align-items: center; gap: 22px; }
+.lp .track { position: relative; height: 4px; border-radius: 4px; background: var(--line); }
+.lp .dot { position: absolute; top: 50%; width: 22px; height: 22px; border-radius: 50%; transform: translate(-50%,-50%); box-shadow: 0 2px 8px rgba(13,37,61,.25); }
+.lp .name { font-size: 24px; font-weight: 600; display:flex; align-items:center; gap:12px; }
+.lp .val { font-family: var(--font-mono); font-size: 24px; font-weight: 600; text-align: right; }
+
+/* steps to action (solution) */
+.act { position: relative; }
+.act .n { font-family: var(--font-mono); font-size: 20px; color: var(--brand-deep); }
+.act h3 { font-size: 32px; margin-top: 10px; }
+.act p { font-size: 21px; color: var(--ink-mute); line-height: 1.5; margin-top: 12px; }
+
+/* edit chrome */
+.edit-hotzone { position: fixed; top: 0; left: 0; width: 80px; height: 80px; z-index: 10000; cursor: pointer; }
+.edit-toggle { position: fixed; top: 18px; left: 18px; width: 46px; height: 46px; border: none; border-radius: 12px; background: #fff; box-shadow: 0 6px 20px rgba(13,37,61,.25); font-size: 20px; cursor: pointer; opacity: 0; pointer-events: none; transition: opacity .3s ease; z-index: 10001; }
+.edit-toggle.show, .edit-toggle.active { opacity: 1; pointer-events: auto; }
+.edit-toggle.active { background: var(--brand); }
+[contenteditable="true"] { outline: 2px dashed rgba(83,58,253,.5); outline-offset: 4px; border-radius: 4px; }
+
+/* progress dots */
+.dots { display: flex; gap: 10px; }
+.dots .dt { width: 9px; height: 9px; border-radius: 50%; background: rgba(255,255,255,.32); transition: all .3s ease; }
+.dots .dt.on { background: #fff; width: 26px; border-radius: 5px; }
+</style>
+</head>
+<body>
+<div class="deck-viewport">
+<main class="deck-stage" id="deckStage">
+
+  <!-- === SLIDE 1 — TITLE === -->
+  <section class="slide title-slide active">
+    <div class="mesh"></div>
+    <div class="pad center">
+      <div class="reveal pill" style="align-self:flex-start"><span class="pdot"></span> Initial Software Demo · Capstone</div>
+      <h1 class="reveal big" style="margin-top:34px">Scam<span class="accent">Scan</span></h1>
+      <p class="reveal tag">Scam-message intelligence for mobile-money markets.</p>
+      <div class="reveal" style="margin-top:46px; display:flex; gap:16px; align-items:center; flex-wrap:wrap">
+        <span class="btn">scamscan-web.vercel.app</span>
+        <span class="pill"><span class="pdot" style="background:var(--c-safe)"></span> live model · macro-F1 0.94</span>
+      </div>
+      <p class="reveal title-meta" style="margin-top:64px">Wilsons Navid Wado Tiwa · BSc Software Engineering · African Leadership University</p>
+    </div>
+    <div class="chrome-page">01</div>
+  </section>
+
+  <!-- === SLIDE 2 — THE PROBLEM === -->
+  <section class="slide">
+    <div class="pad">
+      <div class="chrome-mark"><span class="dot"></span> ScamScan</div>
+      <div style="margin-top:70px">
+        <p class="reveal eyebrow">The problem</p>
+        <h2 class="reveal h-xl" style="margin-top:22px; max-width:1400px">Fraud now arrives<br>as a <span class="accent">message</span>.</h2>
+      </div>
+      <div class="grid3 reveal" style="margin-top:64px">
+        <div class="card">
+          <div class="h-md" style="font-size:30px">SMS &amp; mobile money</div>
+          <p class="muted" style="font-size:21px; line-height:1.5; margin-top:14px">A fake M-Pesa / MoMo alert asks for a PIN or an OTP. The money moves in seconds, and rarely comes back.</p>
+        </div>
+        <div class="card">
+          <div class="h-md" style="font-size:30px">The wallet is the account</div>
+          <p class="muted" style="font-size:21px; line-height:1.5; margin-top:14px">In low-resource markets a mobile wallet holds the savings. A drained wallet is not an inconvenience.</p>
+        </div>
+        <div class="card">
+          <div class="h-md" style="font-size:30px">Filters miss it</div>
+          <p class="muted" style="font-size:21px; line-height:1.5; margin-top:14px">Generic spam filters learn from Western email. Code-mixed, region-specific scams slip straight through.</p>
+        </div>
+      </div>
+      <div class="chrome-page">02</div>
+    </div>
+  </section>
+
+  <!-- === SLIDE 3 — THE SOLUTION (action layer) === -->
+  <section class="slide">
+    <div class="pad">
+      <div class="chrome-mark"><span class="dot"></span> ScamScan</div>
+      <div style="margin-top:70px">
+        <p class="reveal eyebrow">The solution</p>
+        <h2 class="reveal h-lg" style="margin-top:22px; max-width:1500px">It doesn't just flag a scam. It tells you <span class="accent">what to do</span>.</h2>
+        <p class="reveal lead" style="margin-top:22px; max-width:1200px">ScamScan reads the message text alone, then turns the verdict into action. That action layer is the differentiator.</p>
+      </div>
+      <div class="grid3" style="margin-top:60px">
+        <div class="reveal card act d1">
+          <div class="n">01 — READ</div>
+          <h3>The risk</h3>
+          <p>A calibrated verdict across four fraud classes, with a colour-coded risk level and a plain-language read of what the message wants.</p>
+        </div>
+        <div class="reveal card act d2">
+          <div class="n">02 — ACT</div>
+          <h3>What to do now</h3>
+          <p>Class-specific safety steps. Never share a PIN or OTP. Do not pay a fee for a prize. Verify through an official channel.</p>
+        </div>
+        <div class="reveal card act d3">
+          <div class="n">03 — REPORT</div>
+          <h3>Who to contact</h3>
+          <p>Real reporting contacts for the user's region. Kenya 333 / KE-CIRT, Nigeria EFCC / 7726, Ghana CSA 292, and more.</p>
+        </div>
+      </div>
+      <div class="chrome-page">03</div>
+    </div>
+  </section>
+
+  <!-- === SLIDE 4 — FOUR FRAUD CLASSES === -->
+  <section class="slide">
+    <div class="pad">
+      <div class="chrome-mark"><span class="dot"></span> ScamScan</div>
+      <div style="margin-top:70px">
+        <p class="reveal eyebrow">Taxonomy</p>
+        <h2 class="reveal h-lg" style="margin-top:22px">One verdict, four classes.</h2>
+      </div>
+      <div class="grid2" style="margin-top:60px; gap:30px">
+        <div class="reveal card d1">
+          <div class="cls"><span class="sw" style="background:var(--c-phishing)"></span><span class="h-md" style="font-size:32px; color:var(--c-phishing)">Phishing</span></div>
+          <p class="muted" style="font-size:21px; margin-top:14px; line-height:1.5">Credential and link harvesting that impersonates a bank, telecom or service.</p>
+        </div>
+        <div class="reveal card d2">
+          <div class="cls"><span class="sw" style="background:var(--c-momo)"></span><span class="h-md" style="font-size:32px; color:var(--c-momo)">Mobile-Money Fraud</span></div>
+          <p class="muted" style="font-size:21px; margin-top:14px; line-height:1.5">Wallet, PIN, agent and OTP cons targeting M-Pesa, MoMo and similar.</p>
+        </div>
+        <div class="reveal card d3">
+          <div class="cls"><span class="sw" style="background:var(--c-advance)"></span><span class="h-md" style="font-size:32px; color:var(--c-advance)">Advance-Fee Fraud</span></div>
+          <p class="muted" style="font-size:21px; margin-top:14px; line-height:1.5">Prize, lottery, 419 and inheritance lures that ask for an up-front fee.</p>
+        </div>
+        <div class="reveal card d4">
+          <div class="cls"><span class="sw" style="background:var(--c-safe)"></span><span class="h-md" style="font-size:32px; color:var(--c-safe)">Not a Scam</span></div>
+          <p class="muted" style="font-size:21px; margin-top:14px; line-height:1.5">Ordinary, benign messages. The residual class that keeps precision honest.</p>
+        </div>
+      </div>
+      <div class="chrome-page">04</div>
+    </div>
+  </section>
+
+  <!-- === SLIDE 5 — APPROACH / PIPELINE === -->
+  <section class="slide">
+    <div class="pad center">
+      <div class="chrome-mark"><span class="dot"></span> ScamScan</div>
+      <p class="reveal eyebrow">The approach</p>
+      <h2 class="reveal h-lg" style="margin-top:22px">From corpus to live verdict.</h2>
+      <p class="reveal lead" style="margin-top:20px; max-width:1250px">A deliberately classical pipeline: interpretable, robust on a small corpus, and cheap to serve.</p>
+      <div class="flow reveal d2" style="margin-top:66px">
+        <div class="step card" style="padding:30px">
+          <div class="step-n">01</div><div class="step-t">Collect</div>
+          <div class="step-d">Public corpora (Nazario, MOZ-Smishing, Mendeley, UCI) pooled into one schema, deduplicated.</div>
+        </div>
+        <div class="arr">→</div>
+        <div class="step card" style="padding:30px">
+          <div class="step-n">02</div><div class="step-t">Features</div>
+          <div class="step-d">TF-IDF over word 1–2 grams, accent-stripped, sublinear term frequency.</div>
+        </div>
+        <div class="arr">→</div>
+        <div class="step card" style="padding:30px">
+          <div class="step-n">03</div><div class="step-t">Model</div>
+          <div class="step-d">Logistic Regression vs Random Forest on a 70/15/15 stratified split. LR wins.</div>
+        </div>
+        <div class="arr">→</div>
+        <div class="step card" style="padding:30px">
+          <div class="step-n">04</div><div class="step-t">Serve</div>
+          <div class="step-d">The fitted pipeline ships behind a FastAPI endpoint, consumed by the web app.</div>
+        </div>
+      </div>
+      <div class="chrome-page">05</div>
+    </div>
+  </section>
+
+  <!-- === SLIDE 6 — RESULTS === -->
+  <section class="slide">
+    <div class="pad">
+      <div class="chrome-mark"><span class="dot"></span> ScamScan</div>
+      <div style="margin-top:70px">
+        <p class="reveal eyebrow">Results</p>
+        <h2 class="reveal h-lg" style="margin-top:22px">Measured, not claimed.</h2>
+      </div>
+      <div class="row reveal d1" style="margin-top:50px; gap:70px; align-items:flex-end">
+        <div><div class="stat-num accent">0.94</div><div class="stat-label">test macro-F1</div></div>
+        <div><div class="stat-num">95.8%</div><div class="stat-label">accuracy</div></div>
+        <div><div class="stat-num">LR</div><div class="stat-label">beats Random Forest</div></div>
+      </div>
+      <div class="reveal card d2" style="margin-top:48px; padding:40px 48px">
+        <div style="display:flex; justify-content:space-between; align-items:baseline">
+          <div class="step-t" style="font-size:26px">Per-class F1</div>
+          <div class="mono muted" style="font-size:19px">held-out test · n = 664 · axis 0.80–1.00</div>
+        </div>
+        <div style="margin-top:28px; display:flex; flex-direction:column; gap:22px">
+          <div class="lp"><div class="name"><span style="width:13px;height:13px;border-radius:50%;background:var(--c-momo)"></span>Mobile-Money Fraud</div><div class="track"><span class="dot" style="left:95%;background:var(--c-momo)"></span></div><div class="val">0.99</div></div>
+          <div class="lp"><div class="name"><span style="width:13px;height:13px;border-radius:50%;background:var(--c-phishing)"></span>Phishing</div><div class="track"><span class="dot" style="left:80%;background:var(--c-phishing)"></span></div><div class="val">0.96</div></div>
+          <div class="lp"><div class="name"><span style="width:13px;height:13px;border-radius:50%;background:var(--c-safe)"></span>Not a Scam</div><div class="track"><span class="dot" style="left:80%;background:var(--c-safe)"></span></div><div class="val">0.96</div></div>
+          <div class="lp"><div class="name"><span style="width:13px;height:13px;border-radius:50%;background:var(--c-advance)"></span>Advance-Fee Fraud</div><div class="track"><span class="dot" style="left:30%;background:var(--c-advance)"></span></div><div class="val">0.86</div></div>
+        </div>
+      </div>
+      <p class="reveal d3 muted" style="font-size:20px; margin-top:26px; max-width:1500px">Honest caveat: these come from source-provenance labels, so they read slightly high. The dissertation re-evaluates on a human, inter-rater-verified corpus.</p>
+      <div class="chrome-page">06</div>
+    </div>
+  </section>
+
+  <!-- === SLIDE 7 — LIVE DEMO === -->
+  <section class="slide">
+    <div class="pad center">
+      <div class="mesh" style="opacity:.7"></div>
+      <div class="chrome-mark"><span class="dot"></span> ScamScan</div>
+      <p class="reveal eyebrow">Live demo</p>
+      <h2 class="reveal h-xl" style="margin-top:22px">Paste a message.<br>Get a verdict in a second.</h2>
+      <p class="reveal lead d1" style="margin-top:26px; max-width:1250px">A real request hits the hosted model, returns the class and confidence, then the risk, the steps, and the contacts.</p>
+      <div class="reveal d2" style="margin-top:54px; display:flex; gap:18px; flex-wrap:wrap; align-items:center">
+        <span class="btn">scamscan-web.vercel.app</span>
+        <span class="pill"><span class="pdot"></span> API · scam-classifier-api.onrender.com/docs</span>
+      </div>
+      <p class="reveal d3 mono muted" style="margin-top:34px; font-size:19px">Free tier note: the first API call can take 30–50s to wake the server, then it is instant.</p>
+      <div class="chrome-page">07</div>
+    </div>
+  </section>
+
+  <!-- === SLIDE 8 — FUTURE WORK === -->
+  <section class="slide">
+    <div class="pad">
+      <div class="chrome-mark"><span class="dot"></span> ScamScan</div>
+      <div style="margin-top:70px">
+        <p class="reveal eyebrow">Future work</p>
+        <h2 class="reveal h-lg" style="margin-top:22px">Where it goes next.</h2>
+      </div>
+      <div class="grid2" style="margin-top:54px; gap:26px">
+        <div class="reveal card d1"><div class="step-t" style="font-size:27px">A language-model arm</div><p class="muted" style="font-size:20px;margin-top:10px;line-height:1.5">Benchmark an LLM against the classical baseline: accuracy vs cost vs latency.</p></div>
+        <div class="reveal card d2"><div class="step-t" style="font-size:27px">Synthetic-media fraud</div><p class="muted" style="font-size:20px;margin-top:10px;line-height:1.5">Voice clones and deepfakes are the next channel. Out of scope for a text model, on the roadmap.</p></div>
+        <div class="reveal card d3"><div class="step-t" style="font-size:27px">Romance &amp; identity classes</div><p class="muted" style="font-size:20px;margin-top:10px;line-height:1.5">Two more classes, waiting on real message data that does not yet exist publicly.</p></div>
+        <div class="reveal card d4"><div class="step-t" style="font-size:27px">More languages · escalation</div><p class="muted" style="font-size:20px;margin-top:10px;line-height:1.5">Regional dialects, plus Tier-2 partner and Tier-3 automated escalation beyond today's Tier-1.</p></div>
+      </div>
+      <div class="chrome-page">08</div>
+    </div>
+  </section>
+
+  <!-- === SLIDE 9 — CLOSE === -->
+  <section class="slide">
+    <div class="mesh"></div>
+    <div class="pad center">
+      <p class="reveal eyebrow">Thank you</p>
+      <h1 class="reveal big" style="font-size:140px; margin-top:18px">Read a message.<br><span class="accent">Know its intent.</span></h1>
+      <div class="reveal d2" style="margin-top:50px; display:flex; gap:40px; flex-wrap:wrap; font-size:24px">
+        <div><div class="mono muted" style="font-size:18px; letter-spacing:.1em">LIVE</div><div style="font-weight:600; margin-top:6px">scamscan-web.vercel.app</div></div>
+        <div><div class="mono muted" style="font-size:18px; letter-spacing:.1em">CODE</div><div style="font-weight:600; margin-top:6px">github.com/Wilsons-Navid/report-Demo</div></div>
+        <div><div class="mono muted" style="font-size:18px; letter-spacing:.1em">API</div><div style="font-weight:600; margin-top:6px">scam-classifier-api.onrender.com/docs</div></div>
+      </div>
+      <p class="reveal d3 title-meta" style="margin-top:64px">Wilsons Navid Wado Tiwa · BSc Software Engineering · African Leadership University</p>
+    </div>
+    <div class="chrome-page">09</div>
+  </section>
+
+</main>
+</div>
+
+<!-- progress dots (chrome, outside slide design) -->
+<div class="deck-controls"><div class="dots" id="dots"></div></div>
+
+<!-- inline edit affordance -->
+<div class="edit-hotzone" aria-hidden="true"></div>
+<button class="edit-toggle" id="editToggle" title="Edit mode (E)">✏️</button>
+
+<script>
+/* ===========================================
+   SLIDE PRESENTATION CONTROLLER
+   =========================================== */
+class SlidePresentation {
+  constructor() {
+    this.slides = Array.from(document.querySelectorAll('.slide'));
+    this.stage = document.getElementById('deckStage');
+    this.current = 0;
+    this.buildDots();
+    this.setupScale();
+    this.setupKeys();
+    this.setupTouch();
+    this.setupWheel();
+    this.show(0);
+  }
+  setupScale() {
+    const scale = () => {
+      const f = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+      const x = (window.innerWidth - 1920 * f) / 2;
+      const y = (window.innerHeight - 1080 * f) / 2;
+      this.stage.style.transform = `translate(${x}px, ${y}px) scale(${f})`;
+    };
+    scale(); window.addEventListener('resize', scale);
+  }
+  buildDots() {
+    const wrap = document.getElementById('dots');
+    this.slides.forEach((_, i) => {
+      const d = document.createElement('span');
+      d.className = 'dt'; d.addEventListener('click', () => this.show(i));
+      wrap.appendChild(d);
+    });
+    this.dots = Array.from(wrap.children);
+  }
+  setupKeys() {
+    document.addEventListener('keydown', (e) => {
+      if (e.target.getAttribute && e.target.getAttribute('contenteditable') === 'true') return;
+      if (['ArrowRight','ArrowDown',' ','PageDown'].includes(e.key)) { e.preventDefault(); this.next(); }
+      else if (['ArrowLeft','ArrowUp','PageUp'].includes(e.key)) { e.preventDefault(); this.prev(); }
+      else if (e.key === 'Home') this.show(0);
+      else if (e.key === 'End') this.show(this.slides.length - 1);
+    });
+  }
+  setupTouch() {
+    let x0 = null;
+    this.stage.addEventListener('touchstart', (e) => { x0 = e.touches[0].clientX; }, {passive:true});
+    this.stage.addEventListener('touchend', (e) => {
+      if (x0 === null) return;
+      const dx = e.changedTouches[0].clientX - x0;
+      if (Math.abs(dx) > 50) (dx < 0 ? this.next() : this.prev());
+      x0 = null;
+    }, {passive:true});
+  }
+  setupWheel() {
+    let lock = false;
+    window.addEventListener('wheel', (e) => {
+      if (lock || Math.abs(e.deltaY) < 30) return;
+      lock = true; (e.deltaY > 0 ? this.next() : this.prev());
+      setTimeout(() => lock = false, 700);
+    }, {passive:true});
+  }
+  show(i) {
+    this.current = Math.max(0, Math.min(i, this.slides.length - 1));
+    this.slides.forEach((s, n) => {
+      s.classList.toggle('active', n === this.current);
+      s.classList.toggle('visible', n === this.current);
+    });
+    if (this.dots) this.dots.forEach((d, n) => d.classList.toggle('on', n === this.current));
+  }
+  next() { this.show(this.current + 1); }
+  prev() { this.show(this.current - 1); }
+}
+const deck = new SlidePresentation();
+
+/* ===========================================
+   INLINE EDITING (hotzone / E key / button; Ctrl+S exports)
+   =========================================== */
+const editor = {
+  isActive: false,
+  toggleEditMode() {
+    this.isActive = !this.isActive;
+    document.querySelectorAll('.deck-stage h1, .deck-stage h2, .deck-stage h3, .deck-stage p, .deck-stage span, .deck-stage div.step-t, .deck-stage div.step-d')
+      .forEach(el => el.setAttribute('contenteditable', this.isActive));
+    const t = document.getElementById('editToggle');
+    t.classList.toggle('active', this.isActive);
+    if (!this.isActive) this.save();
+  },
+  save() { try { localStorage.setItem('scamscan-deck', document.getElementById('deckStage').innerHTML); } catch (e) {} },
+  restore() { try { const s = localStorage.getItem('scamscan-deck'); if (s) document.getElementById('deckStage').innerHTML = s; } catch (e) {} }
+};
+const editToggle = document.getElementById('editToggle');
+const hotzone = document.querySelector('.edit-hotzone');
+let hideTimeout = null;
+hotzone.addEventListener('mouseenter', () => { clearTimeout(hideTimeout); editToggle.classList.add('show'); });
+hotzone.addEventListener('mouseleave', () => { hideTimeout = setTimeout(() => { if (!editor.isActive) editToggle.classList.remove('show'); }, 400); });
+editToggle.addEventListener('mouseenter', () => clearTimeout(hideTimeout));
+editToggle.addEventListener('mouseleave', () => { hideTimeout = setTimeout(() => { if (!editor.isActive) editToggle.classList.remove('show'); }, 400); });
+editToggle.addEventListener('click', () => editor.toggleEditMode());
+hotzone.addEventListener('click', () => editor.toggleEditMode());
+document.addEventListener('keydown', (e) => {
+  if ((e.key === 'e' || e.key === 'E') && e.target.getAttribute && e.target.getAttribute('contenteditable') !== 'true') editor.toggleEditMode();
+  if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+    e.preventDefault(); editor.save();
+    const html = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+    const blob = new Blob([html], {type:'text/html'});
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'scamscan-deck.html'; a.click();
+  }
+});
+document.querySelector('.deck-stage').addEventListener('input', () => { if (editor.isActive) editor.save(); });
+</script>
+</body>
+</html>
