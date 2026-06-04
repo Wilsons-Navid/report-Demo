@@ -116,7 +116,7 @@ are embedded in `ml/notebooks/model_demo.ipynb`.
   committed dataset and starts Uvicorn. Set `ALLOWED_ORIGINS` to the front-end URL.
 - **Front-end → Vercel** (static): root directory `frontend`. Point it at the API by
   editing `API_BASE` in `frontend/app.js` or visiting `…/?api=https://your-api`.
-- **Next:** retrain on the human κ-verified corpus for the final evaluation.
+- **Next:** retrain with embeddings for the final evaluation.
 
 ## Video demo
 
