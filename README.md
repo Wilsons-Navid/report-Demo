@@ -11,10 +11,12 @@ classes. It runs as a REST API and a web app.
 | `not_a_scam` | "Hey, are we still meeting for lunch at 1pm?" |
 
 **Live demo:**
+- Video Demo → https://drive.google.com/file/d/1uth103FbbM51jlvRIYt8lSDa5EEAeNpU/view?usp=sharing
 - Web app (multi-page demo) → https://scamscan-web.vercel.app · code in [`scamscan-web/`](scamscan-web/)
 - Earlier static demo → https://frontend-inky-xi-23.vercel.app · code in `frontend/`
 - API (Swagger) → https://scam-classifier-api.onrender.com/docs
 - Repo → https://github.com/Wilsons-Navid/report-Demo
+
 
 *(The API runs on Render's free tier, which sleeps after about 15 minutes idle. The first request can take 30 to 50 seconds to wake up.)*
 
